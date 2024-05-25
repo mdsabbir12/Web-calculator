@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+   <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="main">
+      <div class="main2nd">
+        <div class="sec1">
+            <div class="text">
+                <h2>CASIO</h3>
+                <p>fx-260 Solar</p>
+            </div>
+            <div class="sol">
+                <div class="solar">
+                    
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            
+            <div class="inp">
+                <input class="firstin" id="firstdisplay" type="text">
+                <input class="sec secondin" id="secondisplay"  type="text">
+            </div>
+            
+            <div class="buttn2">
+                <button onclick='display( "(" )'>(</button>
+            </div>
+            <div class="buttn2">
+                <button onclick='display( ")" )'>)</button>
+            </div>
+            <div class="buttn2">
+                <button onclick="binaray()">BIN</button>
+            </div>
+            <div class="buttn1" >
+                <button class="btn" onclick="clr()">CLR</button>
+            </div>
+            <div class="buttn1" >
+                <button class="btn" onclick="deletebutton()">DEL</button>
+            </div>
+            <div class="buttn">
+                <button id="readb" onclick='display("7")'>7</button>
+            </div>
+            <div class="buttn">
+                <button id=""  onclick='display("8")'>8</button>
+            </div>
+            <div class="buttn">
+                <button  onclick='display("9")'>9</button>
+            </div>
+            <div class="buttn">
+                <button  onclick='display("/")'>/</button>
+            </div>
+            <div class="buttn">
+                <button  onclick="rootn()">√</button>
+            </div>
+            <div class="buttn">
+                <button onclick='display("4")'>4</button>
+            </div>
+            <div class="buttn">
+                <button onclick='display("5")'>5</button>
+            </div>
+            <div class="buttn">
+                <button onclick='display("6")'>6</button>
+            </div>
+            <div class="buttn">
+                <button onclick='display("*")'>*</button>
+            </div>
+            <div class="buttn">
+                <button onclick='display("^")'>x^n</button>
+            </div>
+            <div class="buttn">
+                <button onclick='display("1")'>1</button>
+            </div>
+            <div class="buttn">
+                <button onclick='display("2")'>2</button>
+            </div>
+            <div class="buttn">
+                <button onclick='display("3")'>3</button>
+            </div>
+            <div class="buttn">
+                <button onclick='display("-")'>-</button>
+            </div>
+            <div class="rk">
+                <button onclick="calculation()" class="buttnn">=</button>
+            </div>
+            <div class="buttn">
+                <button onclick='display("0")'>0</button>
+            </div>
+            <div class="buttn">
+                <button onclick='display(".")'>.</button>
+            </div>
+            <div class="buttn">
+                <button onclick='display("%")'>%</button>
+            </div>
+            <div class="buttn">
+                <button onclick='display("+")'>+</button>
+            </div>
+    
+        </div>
+      </div>
+    </div>
+<script>
+
+        let str="";
+        function display1(s)
+        {
+            let buttonValue = s;
+            let inputField = document.getElementById('firstdisplay');
+            inputField.value = s; 
+        }
+        function display(s)
+        {
+            let buttonValue = s;
+            let inputField = document.getElementById('secondisplay');
+            inputField.setAttribute('data-value', buttonValue);
+            str+=buttonValue;
+            inputField.value = str;
+            
+        }
+        function clr()
+        {
+            str="";
+            display(str);
+        }
+        function deletebutton()
+        {
+            let l=str.length;
+            if(l>0)
+            {
+                str = str.slice(0, -1);
+                let inputField = document.getElementById('secondisplay');
+                inputField.setAttribute('data-value', str);
+                inputField.value = str;
+            }
+
+        }
+        function calculation() {
+            let len = str.length;
+            if (len > 0 && (str[len - 1] === "+" || str[len - 1] === "-" || str[len - 1] === "*" || str[len - 1] === "/")) {
+                clr();
+                display("Error");
+            } else {
+                let ans = parseFloat("0");
+                let num = "";
+                let operator = "+";
+                
+                for (let i = 0; i <= len; i++) {
+                    if (i === len || str[i] === "+" || str[i] === "-" || str[i] === "*" || str[i] === "/") {
+                        let currentNum = parseFloat(num);
+                        switch (operator) {
+                            case "+":
+                                ans += currentNum;
+                                break;
+                            case "-":
+                                ans -= currentNum;
+                                break;
+                            case "*":
+                                ans *= currentNum;
+                                break;
+                            case "/":
+                                ans /= currentNum;
+                                break;
+                        }
+                        operator = str[i];
+                        num = "";
+                    } else {
+                        
+                        num += str[i];
+                    }
+                }
+                display1(str+"="+ans);
+                clr();
+                display(ans);
+            }
+        }
+        function binaray()
+        {
+            let tem = "";
+            let frb = ".";
+            let number = parseFloat(str);
+            let n = Math.floor(number);
+            let frak = number - n; 
+            let bin = [], c = 0;
+            if (n === 0) {
+                tem = "0";
+            } else {
+                while (n !== 0) {
+                    bin[c++] = n % 2;
+                    n = Math.floor(n / 2);
+                }
+                for (let i = c - 1; i >= 0; i--) {
+                    tem += bin[i];
+                }
+            }
+
+            if (frak > 0) {
+                let coun = 0;
+                let maxn = 9;
+                while (frak > 0 && coun < maxn) {
+                    frak *= 2;
+                    if (frak >= 1) {
+                        frb += "1";
+                        frak -= 1;
+                    } else {
+                        frb += "0";
+                    }
+                    coun++;
+                }
+            }
+
+            let result = tem;
+            if (frb !== ".") {
+                result += frb;
+            }
+            display1("("+str+")2="+result);
+            clr();
+            display(result);
+        }
+        function rootn()
+        {
+            let ss=parseFloat(str);
+            let an=Math.sqrt(ss);
+            display1("√"+ss+"="+an.toFixed(2));
+            clr();
+            display(an.toFixed(2));
+
+        }
+
+</script>
+</body>
+</html>
